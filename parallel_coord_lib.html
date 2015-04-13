@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src='https://syntagmatic.github.io/parallel-coordinates/d3.parcoords.js'></script>
+    <link rel="stylesheet" type="text/css" href="https://syntagmatic.github.io/parallel-coordinates/d3.parcoords.css" media="screen" />
+</head>
+<body>
+    <div id="canvas" class="parcoords" style="width:1440px; height:600px"></div>
+    <script>
+    d3.csv("data/asthma.csv", function(d){
+        // strip out relevant fields
+        var point = {};
+        point.AsthmaRates = d.AsthmaRates;
+        point.AirQuality = d.AirQuality;
+        point.SurfaceTemperature0908 = d.SurfaceTemperature0908;
+        point.NonWhite = d.NonWhite;
+        point.Income = d.Income;
+        point.NoHighSchoolDegree = d.NoHighSchoolDegree;
+        point.PopulationDensity = d.PopulationDensity;
+        point.TreeDensity = d.TreeDensity;
+        return point;
+    }, function(error, data) {
+
+    // find min/max of Asthma rates
+    var blue_to_brown = d3.scale.linear()
+      .domain(d3.extent(data, function(d) {
+        return d.AsthmaRates;
+      }))
+      .range(["black", "red"]);
+
+    // initialize the parallel coord element
+    var pc = d3.parcoords()("#canvas");
+
+    pc
+      .data(data)
+      .color(function(d) { return blue_to_brown(d.AsthmaRates); })
+      .alpha(0.2)
+      .margin({ top: 50, left: 20, bottom: 20, right: 20 })
+      .render()
+      .reorderable()
+      .brushMode("1D-axes")
+      .shadows();
+    });
+    </script>
+</body>
+</html>
