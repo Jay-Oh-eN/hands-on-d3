@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+svg {
+  font: 10px sans-serif;
+}
+
+.background path {
+  fill: none;
+  stroke: #ddd;
+  shape-rendering: crispEdges;
+}
+
+.foreground path {
+  fill: none;
+  stroke: steelblue;
+}
+
+.brush .extent {
+  fill-opacity: .3;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+.axis line,
+.axis path {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+}
+</style>
+</meta>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+
+var margin = {top: 20, right: 20, bottom: 150, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var x = d3.scale.ordinal()
+    .rangePoints([0, width], 1);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.csv("data/asthma.csv", function(d){
+        // strip out relevant fields
+        var point = {};
+        point.AsthmaRates = +d.AsthmaRates;
+        point.AirQuality = +d.AirQuality;
+        point.SurfaceTemperature0908 = +d.SurfaceTemperature0908;
+        point.NonWhite = +d.NonWhite;
+        point.Income = +d.Income;
+        point.NoHighSchoolDegree = +d.NoHighSchoolDegree;
+        point.PopulationDensity = +d.PopulationDensity;
+        point.TreeDensity = +d.TreeDensity;
+        return point;
+    }, function(error, data) {
+  
+  debugger;
+  var scales = {};
+  var features = d3.keys(data[0]);  
+  
+  features.forEach(function(key) {
+      scales[key] = d3.scale.linear()
+        .range([height, 0])
+        .domain([0, d3.max(data, function(d) { return d[key]; })]);
+  });
+  
+  var line = d3.svg.line();
+  var axis = d3.svg.axis().orient('left');
+    
+  x.domain(features);
+  
+  var path = function (d) {
+    return line(features.map(function(k) { return [x(k), scales[k](d[k])]; }));
+  }
+  
+  var foreground = svg.append("g")
+      .attr("class", "foreground")
+    .selectAll("path")
+      .data(data)
+    .enter().append("path")
+      .attr("d", path);
+  
+  // Add a group element for each dimension.
+  var g = svg.selectAll(".dimension")
+      .data(features)
+    .enter().append("g")
+      .attr("class", "dimension")
+      .attr("transform", function(d) { return "translate(" + x(d) + ")"; });
+    
+  g.append("g")
+      .attr("class", "axis")
+      .each(function(d) { d3.select(this).call(axis.scale(scales[d])); })
+    .append("text")
+      .style("text-anchor", "middle")
+      .attr("y", -9)
+      .text(function(d) { return d; });
+    
+    // Add and store a brush for each axis.
+  g.append("g")
+      .attr("class", "brush")
+      .each(function(d) { d3.select(this).call(scales[d].brush = d3.svg.brush().y(scales[d]).on("brush", brush)); })
+    .selectAll("rect")
+      .attr("x", -8)
+      .attr("width", 16);
+    // Handles a brush event, toggling the display of foreground lines.
+function brush() {
+  var actives = features.filter(function(p) { return !scales[p].brush.empty(); }),
+      extents = actives.map(function(p) { return scales[p].brush.extent(); });
+  foreground.style("display", function(d) {
+    return actives.every(function(p, i) {
+      return extents[i][0] <= d[p] && d[p] <= extents[i][1];
+    }) ? null : "none";
+  });
+}
+});
+</script>
+</body>
+</html>

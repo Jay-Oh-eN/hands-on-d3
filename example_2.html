@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+svg {
+  font: 10px sans-serif;
+}
+
+.background path {
+  fill: none;
+  stroke: #ddd;
+  shape-rendering: crispEdges;
+}
+
+.foreground path {
+  fill: none;
+  stroke: steelblue;
+}
+
+.brush .extent {
+  fill-opacity: .3;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+.axis line,
+.axis path {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+}
+</style>
+</meta>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+
+var margin = {top: 20, right: 20, bottom: 150, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.csv("data/asthma.csv", function(d){
+        // strip out relevant fields
+        var point = {};
+        point.AsthmaRates = +d.AsthmaRates;
+        point.AirQuality = +d.AirQuality;
+        point.SurfaceTemperature0908 = +d.SurfaceTemperature0908;
+        point.NonWhite = +d.NonWhite;
+        point.Income = +d.Income;
+        point.NoHighSchoolDegree = +d.NoHighSchoolDegree;
+        point.PopulationDensity = +d.PopulationDensity;
+        point.TreeDensity = +d.TreeDensity;
+        return point;
+    }, function(error, data) {
+  
+  debugger;
+  var scales = {};
+  var features = d3.keys(data[0]);  
+  
+  features.forEach(function(key) {
+      scales[key] = d3.scale.linear()
+        .range([height, 0])
+        .domain([0, d3.max(data, function(d) { return d[key]; })]);
+  });
+  
+  // create a D3 line object and axis object
+  // PUT CODE HERE
+    
+  var x = d3.scale.ordinal()
+    .rangePoints([0, width], 1);
+    
+  x.domain(features);
+  
+  var path = function (d) {
+    return line(features.map(function(k) { return [x(k), scales[k](d[k])]; }));
+  }
+  
+  // selectAll paths on the page and bind
+  // a single data point to them.  For each
+  // append a path object with attribute 'd'
+  // set to the path created above
+  
+  
+  // Add a group element for each dimension. 
+  // Bind the 'features' data to this.
+  // Translate this group according to the x scale.
+    
+  
+  // Append the axes for each dimension and scale them properly
+  g.append("g")
+      .attr("class", "axis")
+      .each(function(d) { d3.select(this).call(axis.scale(scales[d])); })
+    .append("text")
+      .style("text-anchor", "middle")
+      .attr("y", -9)
+      .text(function(d) { return d; });
+});
+</script>
+</body>
+</html>

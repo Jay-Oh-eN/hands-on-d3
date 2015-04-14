@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src='https://syntagmatic.github.io/parallel-coordinates/d3.parcoords.js'></script>
+    <link rel="stylesheet" type="text/css" href="https://syntagmatic.github.io/parallel-coordinates/d3.parcoords.css" media="screen" />
+</head>
+<body>
+    <div id="canvas" class="parcoords" style="width:1440px; height:600px"></div>
+    <script>
+    d3.csv("data/asthma.csv", function(d){
+        // strip out relevant fields
+        var point = {};
+        point.AsthmaRates = d.AsthmaRates;
+        point.AirQuality = d.AirQuality;
+        point.SurfaceTemperature0908 = d.SurfaceTemperature0908;
+        point.NonWhite = d.NonWhite;
+        point.Income = d.Income;
+        point.NoHighSchoolDegree = d.NoHighSchoolDegree;
+        point.PopulationDensity = d.PopulationDensity;
+        point.TreeDensity = d.TreeDensity;
+        return point;
+    }, function(error, data) {
+
+    // find min/max of Asthma rates for color scale
+    // PUT CODE HERE
+        
+    // create a linear scale to color lines based on'AsthmaRates'
+    // PUT CODE HERE
+
+    // initialize the parallel coord element
+    // PUT CODE HERE
+
+    // bind the data to the parallel coord element
+    // and set parameters of chart type
+    // PUT CODE HERE
+        
+    });
+        
+    </script>
+</body>
+</html>
