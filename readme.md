@@ -6,7 +6,6 @@ I would love your feedback on the materials in the Github [issues](https://githu
 
 And please do not hesitate to reach out to me directly via email at jondinu@gmail.com or over twitter @clearspandex
 
-![Imgur](http://i.imgur.com/uNMk5Ch.gif)
 
 > Throughout this workshop, you will learn how to make this interactive parallel coordinate plot of environmental conditions related to incidences of Asthma in SF.
 
@@ -37,33 +36,99 @@ __If you need some help with Javascript or D3, refer to the [tutorials](#resourc
 * [D3.js][d3]
 * [Parallel Coordinates][parallel]
 
-### Whats in here?
-
-    data/                data.sfgov.org datset on Climate and Health in SF
-    images/              static image examples to be used in the readme.md
-    lib/                 supporting JavaScript library files
-    exercise_1.html      file containing dimple.js exercise
-    exercise_2.html      D3 equivalent of dimple.js line chart
-    exercise_3.html      animating line plot with interactive buttons
-    LICENSE              Details of rights of use and distribution
-    presentation.pdf     lecture slides from presentation
-    readme.md            this file!
-    template.html        HTML and Javascript scaffold to start from
-
 ## The Data
 
 The [data][sf-asthma] is from the city of SF about certain environmental and health conditions of given Census tracts in the City.  You can read more about the individual fields from the [data dictionary][dictionary].
 
 > This comprehensive dataset was used to inform and calculate the Heat Vulnerability Index for our Climate and Health Program. The dataset includes satellite imagery from NASA, temperature data from NOAA and other data sets such as individual physiology, culture, local infrastructure, behavior, and social and demographic characteristics which influence the risk of heat-related health impacts.
 
-The files are comma separated with headers and 8 fields:
+There 21 fields in the file (comma separated with headers) but we will be focusing on the following 8 fields:
 
-timestamp|city|temperature|light|airquality_raw|sound|humidity|dust
-:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:
-2015-02-16T17:00:00.000Z|San Francisco|20.8856185354523|2231.45801048026|28.8458008730416|1674.71050009727|48.4880466992298|882.367404134883
-2015-02-16T18:00:00.000Z|San Francisco|21.8623045793052|2542.46720508251|26.5113633058142|1652.25960948903|43.9341875396295|912.0280753969
-2015-02-16T19:00:00.000Z|San Francisco|23.5113166041101|3215.03460441893|24.8987852323788|1690.5842506536|40.5058249680354|939.447105875158
-2015-02-16T20:00:00.000Z|San Francisco|25.6472096479114|4558.69142401972|26.0867059045864|1704.29832357106|38.4312464272035|999.743066983922
+<div class="output_subarea output_html rendered_html output_result"><div style="overflow:auto;">
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AsthmaRates</th>
+      <th>AirQuality</th>
+      <th>SurfaceTemperature0908</th>
+      <th>NonWhite</th>
+      <th>Income</th>
+      <th>NoHighSchoolDegree</th>
+      <th>PopulationDensity</th>
+      <th>TreeDensity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td> 6.299994</td>
+      <td> 2.2</td>
+      <td> 322</td>
+      <td> 0.230650</td>
+      <td>  93777</td>
+      <td> 0.013605</td>
+      <td>  1985.746482</td>
+      <td> 1185</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td> 6.276086</td>
+      <td> 2.2</td>
+      <td> 316</td>
+      <td> 0.398085</td>
+      <td>  73540</td>
+      <td> 0.130243</td>
+      <td> 27208.307880</td>
+      <td> 6133</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td> 5.700004</td>
+      <td> 2.1</td>
+      <td> 313</td>
+      <td> 0.124894</td>
+      <td> 171257</td>
+      <td> 0.024085</td>
+      <td>  7245.100198</td>
+      <td> 2989</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td> 5.699994</td>
+      <td> 2.2</td>
+      <td> 314</td>
+      <td> 0.104333</td>
+      <td> 187377</td>
+      <td> 0.014402</td>
+      <td> 41077.512777</td>
+      <td> 5047</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td> 5.699984</td>
+      <td> 2.2</td>
+      <td> 312</td>
+      <td> 0.175050</td>
+      <td> 117254</td>
+      <td> 0.040223</td>
+      <td> 21792.728792</td>
+      <td> 3155</td>
+    </tr>
+    <tr>
+      <th> ...</th>
+      <td> ...</td>
+      <td> ...</td>
+      <td> ...</td>
+      <td> ...</td>
+      <td> ...</td>
+      <td> ...</td>
+      <td> ...</td>
+      <td> ...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
 
 <hr>
 
@@ -155,7 +220,7 @@ Rights of examples and screenshots of data visualizations belong to the authors 
 [mongoose]: http://cesanta.com/mongoose.shtml
 [sublime]: http://www.sublimetext.com/2
 [chrome]: https://www.google.com/chrome/browser/desktop/
-[zip]: https://github.com/Jay-Oh-eN/strata-interactive-data-viz/archive/master.zip
+[zip]: https://github.com/Jay-Oh-eN/hands-on-d3/archive/master.zip
 [gitit]: http://jlord.us/git-it/
 [mongoose-config]: images/mongoose-config.png
 
