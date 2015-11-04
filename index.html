@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Hands-on-d3 by Jay-Oh-eN</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Hands-on-d3</h1>
+      <h2 class="project-tagline">A D3.js workshop using SF open data!</h2>
+      <a href="https://github.com/Jay-Oh-eN/hands-on-d3" class="btn">View on GitHub</a>
+      <a href="https://github.com/Jay-Oh-eN/hands-on-d3/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/Jay-Oh-eN/hands-on-d3/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="hands-on-d3" class="anchor" href="#hands-on-d3" aria-hidden="true"><span class="octicon octicon-link"></span></a>Hands on D3!</h1>
+
+<p>These are the materials for my workshop on creating interactive data visualization with D3!</p>
+
+<p>I would love your feedback on the materials in the Github <a href="https://github.com/Jay-Oh-eN/hands-on-d3/issues">issues</a>.</p>
+
+<p>And please do not hesitate to reach out to me directly via email at <a href="mailto:jondinu@gmail.com">jondinu@gmail.com</a> or over twitter @clearspandex</p>
+
+<blockquote>
+<p>Throughout this workshop, you will learn how to make this interactive parallel coordinate plot of environmental conditions related to incidences of Asthma in SF.</p>
+</blockquote>
+
+<h2>
+<a id="getting-setup" class="anchor" href="#getting-setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting Setup</h2>
+
+<p>You will need:</p>
+
+<ul>
+<li>HTTP web server
+
+<ul>
+<li>On OSX and Linux <code>python -m SimpleHTTPServer</code>
+</li>
+<li>On Windows, I recommend downloading <a href="http://cesanta.com/mongoose.shtml">Mongoose</a>
+</li>
+</ul>
+</li>
+<li>Text Editor: I recommend <a href="http://www.sublimetext.com/2">Sublime Text</a>
+</li>
+<li>A (modern) Web Browser: I recommend <a href="https://www.google.com/chrome/browser/desktop/">Google Chrome</a>
+</li>
+</ul>
+
+<p>Once you have downloaded the software above, you are ready to start making some data visualizations!</p>
+
+<p><img src="http://media2.giphy.com/media/rOTGSPxvJJY7m/giphy.gif" alt=""></p>
+
+<ol>
+<li>Get the files: Download the <a href="https://github.com/Jay-Oh-eN/hands-on-d3/archive/master.zip">ZIP</a> or <code>git clone https://github.com/Jay-Oh-eN/hands-on-d3.git</code> (git <a href="http://jlord.us/git-it/">tutorial</a>) this repository.</li>
+<li>Start you HTTP web server
+
+<ul>
+<li>If using a <code>SimpleHTTPServer</code>, navigate into the repository folder (<code>hands-on-d3</code>) on your machine before you start the server.</li>
+<li>If using Mongoose, set the 'Shared Directory' to be the repository folder.</li>
+</ul>
+</li>
+<li>Navigate with a web browser to <code>http://localhost:[port]</code> where [port] is the port the server has started on (<code>SimpleHTTPServer</code> defaults to port 8000)</li>
+<li>You should see the directory listing, click on any of the <code>.html</code> files and you should see the charts.</li>
+</ol>
+
+<p><strong>If you need some help with Javascript or D3, refer to the <a href="#resources">tutorials</a> below</strong></p>
+
+<h3>
+<a id="libraries-used" class="anchor" href="#libraries-used" aria-hidden="true"><span class="octicon octicon-link"></span></a>Libraries Used</h3>
+
+<ul>
+<li><a href="http://d3js.org/">D3.js</a></li>
+<li><a href="https://syntagmatic.github.io/parallel-coordinates/">Parallel Coordinates</a></li>
+</ul>
+
+<h2>
+<a id="the-data" class="anchor" href="#the-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Data</h2>
+
+<p>The <a href="https://data.sfgov.org/Health-and-Social-Services/Climate-and-Health-Data/paqg-zyqx">data</a> is from the city of SF about certain environmental and health conditions of given Census tracts in the City.  You can read more about the individual fields from the <a href="data/dictionary.pdf">data dictionary</a>.</p>
+
+<blockquote>
+<p>This comprehensive dataset was used to inform and calculate the Heat Vulnerability Index for our Climate and Health Program. The dataset includes satellite imagery from NASA, temperature data from NOAA and other data sets such as individual physiology, culture, local infrastructure, behavior, and social and demographic characteristics which influence the risk of heat-related health impacts.</p>
+</blockquote>
+
+<p>There 21 fields in the file (comma separated with headers) but we will be focusing on the following 8 fields:</p>
+
+<div><div>
+<table border="1">
+  <thead>
+    <tr>
+      <th></th>
+      <th>AsthmaRates</th>
+      <th>AirQuality</th>
+      <th>SurfaceTemperature0908</th>
+      <th>NonWhite</th>
+      <th>Income</th>
+      <th>NoHighSchoolDegree</th>
+      <th>PopulationDensity</th>
+      <th>TreeDensity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td> 6.299994</td>
+      <td> 2.2</td>
+      <td> 322</td>
+      <td> 0.230650</td>
+      <td>  93777</td>
+      <td> 0.013605</td>
+      <td>  1985.746482</td>
+      <td> 1185</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td> 6.276086</td>
+      <td> 2.2</td>
+      <td> 316</td>
+      <td> 0.398085</td>
+      <td>  73540</td>
+      <td> 0.130243</td>
+      <td> 27208.307880</td>
+      <td> 6133</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td> 5.700004</td>
+      <td> 2.1</td>
+      <td> 313</td>
+      <td> 0.124894</td>
+      <td> 171257</td>
+      <td> 0.024085</td>
+      <td>  7245.100198</td>
+      <td> 2989</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td> 5.699994</td>
+      <td> 2.2</td>
+      <td> 314</td>
+      <td> 0.104333</td>
+      <td> 187377</td>
+      <td> 0.014402</td>
+      <td> 41077.512777</td>
+      <td> 5047</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td> 5.699984</td>
+      <td> 2.2</td>
+      <td> 312</td>
+      <td> 0.175050</td>
+      <td> 117254</td>
+      <td> 0.040223</td>
+      <td> 21792.728792</td>
+      <td> 3155</td>
+    </tr>
+    <tr>
+      <th> ...</th>
+      <td> ...</td>
+      <td> ...</td>
+      <td> ...</td>
+      <td> ...</td>
+      <td> ...</td>
+      <td> ...</td>
+      <td> ...</td>
+      <td> ...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+
+<hr>
+
+<h2>
+<a id="visualization-examples" class="anchor" href="#visualization-examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Visualization Examples</h2>
+
+<h3>
+<a id="author-driven" class="anchor" href="#author-driven" aria-hidden="true"><span class="octicon octicon-link"></span></a>Author Driven</h3>
+
+<h4>
+<a id="facebook-ipo-nyt" class="anchor" href="#facebook-ipo-nyt" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="http://www.nytimes.com/interactive/2012/05/17/business/dealbook/how-the-facebook-offering-compares.html">Facebook IPO</a> (NYT)</h4>
+
+<p><img src="images/facebook_ipo_nyt.png" alt=""></p>
+
+<h4>
+<a id="syrian-refugee-crisis-wesam-manassra" class="anchor" href="#syrian-refugee-crisis-wesam-manassra" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="http://visualizations.manassra.com/syria">Syrian Refugee Crisis</a> (Wesam Manassra)</h4>
+
+<p><img src="images/syria-img.png" alt=""></p>
+
+<h3>
+<a id="viewer-driven" class="anchor" href="#viewer-driven" aria-hidden="true"><span class="octicon octicon-link"></span></a>Viewer Driven</h3>
+
+<h4>
+<a id="crimespotting-stamen" class="anchor" href="#crimespotting-stamen" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="http://sanfrancisco.crimespotting.org/#zoom=13&amp;lon=-122.438&amp;types=AA,Mu,Ro,SA,DP,Na,Al,Pr,Th,VT,Va,Bu,Ar&amp;lat=37.760&amp;hours=0-23&amp;dtend=2014-02-28T23:59:59-07:00&amp;dtstart=2014-02-21T23:59:59-07:00">Crimespotting</a> (Stamen)</h4>
+
+<p><img src="images/crimespotting-screenshot.png" alt=""></p>
+
+<h3>
+<a id="martini-glass-mix-of-author-and-viewer" class="anchor" href="#martini-glass-mix-of-author-and-viewer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Martini Glass (mix of author and viewer)</h3>
+
+<h4>
+<a id="visualizing-mbta-data-mike-barry-and-brian-card" class="anchor" href="#visualizing-mbta-data-mike-barry-and-brian-card" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="http://mbtaviz.github.io/">Visualizing MBTA Data</a> (Mike Barry and Brian Card)</h4>
+
+<p><img src="images/mbta-img.png" alt=""></p>
+
+<h4>
+<a id="gun-deaths-periscopic" class="anchor" href="#gun-deaths-periscopic" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="http://guns.periscopic.com/">Gun Deaths</a> (Periscopic)</h4>
+
+<p><img src="images/periscopic.png" alt=""></p>
+
+<h4>
+<a id="flight-delays-538" class="anchor" href="#flight-delays-538" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="http://fivethirtyeight.com/interactives/flights/">Flight Delays</a> (538)</h4>
+
+<p><img src="images/flights.png" alt=""></p>
+
+<h2>
+<a id="next-steps" class="anchor" href="#next-steps" aria-hidden="true"><span class="octicon octicon-link"></span></a>Next Steps</h2>
+
+<ul>
+<li><a href="http://ritchiesking.com/book/">Visual Storytelling with D3 (Ritchie King)</a></li>
+<li><a href="https://www.udacity.com/course/ud507">Data Visualization and D3.js (Udacity)</a></li>
+<li><a href="http://chimera.labs.oreilly.com/books/1230000000345">Interactive Data Vizualization (Scott Murray)</a></li>
+<li><a href="http://courses.cs.washington.edu/courses/cse512/14wi/">CSE512: Data Visualization (University of Washington)</a></li>
+<li><a href="http://d3-js.meetup.com/">D3 Meetups</a></li>
+</ul>
+
+<h2>
+<a id="resources" class="anchor" href="#resources" aria-hidden="true"><span class="octicon octicon-link"></span></a>Resources</h2>
+
+<h3>
+<a id="general" class="anchor" href="#general" aria-hidden="true"><span class="octicon octicon-link"></span></a>General</h3>
+
+<ul>
+<li><a href="http://homes.cs.washington.edu/%7Ejheer/files/zoo/">A Tour Through the Visualization Zoo</a></li>
+</ul>
+
+<h3>
+<a id="javascript" class="anchor" href="#javascript" aria-hidden="true"><span class="octicon octicon-link"></span></a>Javascript</h3>
+
+<ul>
+<li><a href="http://jsforcats.com/">JS for Cats (beginner)</a></li>
+<li><a href="https://www.codeschool.com/paths/javascript">Code School interactive</a></li>
+<li><a href="http://eloquentjavascript.net/">Eloquent Javascript (more advanced)</a></li>
+<li><a href="http://superherojs.com/">Superhero.js (set of resources)</a></li>
+</ul>
+
+<h3>
+<a id="d3" class="anchor" href="#d3" aria-hidden="true"><span class="octicon octicon-link"></span></a>D3</h3>
+
+<ul>
+<li><a href="http://bost.ocks.org/mike/bar/">Let's Make a Bar Chart</a></li>
+<li><a href="http://bost.ocks.org/mike/selection/">How Selections Work</a></li>
+<li><a href="http://bost.ocks.org/mike/join/">Thinking with Joins</a></li>
+<li><a href="http://bl.ocks.org/mbostock/3808218">General Update Pattern</a></li>
+<li><a href="http://bost.ocks.org/mike/transition/">Working with Transitions</a></li>
+<li><a href="https://github.com/mbostock/d3/wiki/Gallery">Gallery of D3 example</a></li>
+<li><a href="https://www.dashingd3js.com/">Dashing D3</a></li>
+<li><a href="http://www.d3noob.org/">D3 Noob</a></li>
+<li><a href="http://bl.ocks.org/mbostock/1256572">D3 Show Reel</a></li>
+<li><a href="https://github.com/mbostock/d3/wiki/Tutorials">D3 master list of tutorials</a></li>
+<li><a href="http://bl.ocksplorer.org/">bl.ocksplorer</a></li>
+<li><a href="http://bost.ocks.org/mike/chart/">Towards Reusable Charts</a></li>
+</ul>
+
+<h3>
+<a id="d3-libraries" class="anchor" href="#d3-libraries" aria-hidden="true"><span class="octicon octicon-link"></span></a>D3 Libraries</h3>
+
+<ul>
+<li><a href="http://app.raw.densitydesign.org/">RAW (GUI)</a></li>
+<li><a href="http://d3plus.org/">D3plus (charting)</a></li>
+<li><a href="http://code.shutterstock.com/rickshaw/">Rickshaw (timeseries)</a></li>
+<li><a href="http://dc-js.github.io/dc.js/">dc.js (multidimensional)</a></li>
+<li><a href="http://nvd3.org/">NVD3 (charting)</a></li>
+<li><a href="http://c3js.org/">c3.js (charting)</a></li>
+<li><a href="https://github.com/mbostock/queue">Queue.js (multiple data files)</a></li>
+</ul>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>Copyright 2015 Jonathan Dinu.</p>
+
+<p>All files and content licensed under <a href="LICENSE">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Public License</a></p>
+
+<p>Rights of examples and screenshots of data visualizations belong to the authors themselves.</p>
+
+
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/Jay-Oh-eN/hands-on-d3">Hands-on-d3</a> is maintained by <a href="https://github.com/Jay-Oh-eN">Jay-Oh-eN</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
