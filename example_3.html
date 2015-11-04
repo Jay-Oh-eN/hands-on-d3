@@ -73,7 +73,7 @@ d3.csv("data/asthma.csv", function(d){
   features.forEach(function(key) {
       scales[key] = d3.scale.linear()
         .range([height, 0])
-        .domain([0, d3.max(data, function(d) { return d[key]; })]);
+        .domain(d3.extent(data, function(d) { return d[key]; }));
   });
   
   var line = d3.svg.line();
@@ -82,7 +82,8 @@ d3.csv("data/asthma.csv", function(d){
   x.domain(features);
   
   var path = function (d) {
-    return line(features.map(function(k) { return [x(k), scales[k](d[k])]; }));
+    var intermediate = features.map(function(k) { return [x(k), scales[k](d[k])]; })
+      return line(intermediate);
   }
   
   var foreground = svg.append("g")
